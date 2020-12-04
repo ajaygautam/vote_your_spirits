@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1079990197230",
+    "project_id": "vote-your-spirits",
+    "storage_bucket": "vote-your-spirits.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1079990197230:android:796ec4812d9008268e0cff",
+        "android_client_info": {
+          "package_name": "gautam.ajay.voteYourSpirits"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1079990197230-djueotinhp139bgnu582h3ei7se4ub79.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTYt99-CnbIQE3loCtsadL96Ogxe0-I_c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1079990197230-djueotinhp139bgnu582h3ei7se4ub79.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1079990197230-k5892sv4mii19dtfh8nv7kc2s4dndl9q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "gautam.ajay.voteYourSpirits"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
