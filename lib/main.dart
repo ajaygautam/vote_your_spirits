@@ -1,7 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -18,7 +21,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -38,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Container(
             decoration: const BoxDecoration(color: Colors.red),
             padding: const EdgeInsets.all(10),
-            child: Text(doc['votes '].toString()),
+            child: Text(doc['votes'].toString()),
           )
         ],
       ),
@@ -55,18 +57,17 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection("bandnames").snapshots(),
-        builder: (context, snapshot) {
-          if (! snapshot.hasData) {
-            return const Text("Loading...");
-          }
-          return ListView.builder(
-            itemExtent: 80,
-            itemCount: snapshot.data.documents.length,
-            itemBuilder: (context, index) => _buildListItem(context, snapshot.data.documents[index]),
-          );
-        }
-      ),
-     );
+          stream: FirebaseFirestore.instance.collection("bandnames").snapshots(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const Text("Loading...");
+            }
+            return ListView.builder(
+              itemExtent: 80,
+              itemCount: snapshot.data.documents.length,
+              itemBuilder: (context, index) => _buildListItem(context, snapshot.data.documents[index]),
+            );
+          }),
+    );
   }
 }
