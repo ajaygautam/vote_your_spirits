@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       onTap: () {
-        print("increase votes here");
+        print("TODO - increase votes here");
       },
     );
   }
@@ -53,21 +54,56 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
+      appBar: AppBar(title: Text(widget.title)),
       body: StreamBuilder(
           stream: FirebaseFirestore.instance.collection("bandnames").snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return const Text("Loading...");
             }
-            return ListView.builder(
-              itemExtent: 80,
-              itemCount: snapshot.data.documents.length,
-              itemBuilder: (context, index) => _buildListItem(context, snapshot.data.documents[index]),
-            );
+            print("Building list for ${snapshot.data.documents.length} names...");
+            return KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
+              print("Building with isKeyboardVisible: $isKeyboardVisible");
+              List<DocumentSnapshot> documents = snapshot.data.documents;
+              List<Widget> spiritNameWidgets = documents.map((doc) => _buildListItem(context, doc)).toList();
+              return Column(children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: EntryForm(),
+                ),
+              ]..addAll(spiritNameWidgets));
+            });
           }),
+    );
+  }
+}
+
+class EntryForm extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _EntryFormState();
+}
+
+class _EntryFormState extends State<EntryForm> {
+  final _formKey = GlobalKey<FormState>();
+  final _name = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return AutofillGroup(
+      child: Form(
+        key: _formKey,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: TextFormField(
+              enableSuggestions: true,
+              autofillHints: [AutofillHints.name],
+              keyboardType: TextInputType.name,
+              textCapitalization: TextCapitalization.words,
+              controller: _name,
+              validator: (val) => val.isEmpty ? 'Please enter Name' : null,
+              decoration: InputDecoration(hintText: 'Enter new Name')),
+        ),
+      ),
     );
   }
 }
